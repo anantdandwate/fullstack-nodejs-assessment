@@ -6,8 +6,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
 
   const config = new DocumentBuilder()
-    .setTitle("Cocktails API")
-    .setDescription("API for managing cocktail recipes")
+    .setTitle("Cocktail Recipes API")
+    .setDescription("REST API for managing cocktail recipes")
     .setVersion("1.0")
     .build();
 
@@ -15,6 +15,7 @@ async function bootstrap() {
   SwaggerModule.setup("api", app, document);
 
   await app.listen(3000);
+  app.enableCors();
   console.log("Backend listening on port 3000");
 }
 bootstrap();

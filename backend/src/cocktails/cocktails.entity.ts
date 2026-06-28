@@ -3,11 +3,14 @@ import { ApiProperty } from "@nestjs/swagger";
 
 @Entity()
 export class Cocktails {
-  @ApiProperty({ example: 1 })
+  @ApiProperty({
+    example: 1,
+    description: "Cocktail identifier",
+  })
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ApiProperty({ example: "Green Punch" })
+  @ApiProperty({ example: "Green Punch", description: "Name of the cocktail" })
   @Column()
   title: string;
 
