@@ -4,11 +4,14 @@
     <div v-if="loading">Loading...</div>
     <div v-else-if="error">{{ error }}</div>
     <div v-else>
-        <label for="search">Search by description:</label>
-       <input type="text" id="search" v-model="search" />
+      <label for="search">Search by description:</label>
+      <input type="text" id="search" v-model="search" />
       <ul>
         <li v-for="item in filteredData" :key="item.id">
-            <span style="font-weight: bold">{{ item.title }}</span> price: {{ item.price }}€
+          <router-link :to="`/cocktails/${item.id}`">
+            <strong>{{ item.title }}</strong>
+          </router-link>
+          price: {{ item.price }}€
         </li>
       </ul>
     </div>
@@ -17,8 +20,7 @@
 </template>
 
 <script>
-import { search } from 'core-js/fn/symbol';
-import { ref, onMounted, computed} from 'vue';
+import { ref, onMounted, computed } from 'vue';
 
 export default {
   name: 'NewCocktail',
