@@ -14,6 +14,10 @@
         <textarea v-model="form.description" id="description" required></textarea>
       </div>
       <button type="submit">Submit</button>
+      <p v-if="errorMessage" style="color:red">
+        {{ errorMessage }}
+      </p>
+
     </form>
   </div>
 </template>
@@ -27,11 +31,13 @@ export default {
         title: '',
         price: '',
         description: ''
-      }
+      },
+      errorMessage: ''
     };
   },
   methods: {
     async submitForm() {
+      this.errorMessage = '';
       try {
         const response = await fetch('http://localhost:3000/cocktails', {
           method: 'POST',
@@ -53,7 +59,7 @@ export default {
         this.form.description = '';
       } catch (error) {
         console.error('There was an error submitting the form:', error);
-        // Handle the error (e.g., show an error message)
+        this.errorMessage = 'There was an error submitting the form. Please try again.';
       }
     }
   }
@@ -66,18 +72,23 @@ form {
   max-width: 400px;
   margin: 0 auto;
 }
+
 div {
   margin-bottom: 10px;
 }
+
 label {
   display: block;
   margin-bottom: 5px;
 }
-input, textarea {
+
+input,
+textarea {
   width: 100%;
   padding: 8px;
   box-sizing: border-box;
 }
+
 button {
   padding: 10px 15px;
   background-color: #007bff;
@@ -85,6 +96,7 @@ button {
   border: none;
   cursor: pointer;
 }
+
 button:hover {
   background-color: #0056b3;
 }

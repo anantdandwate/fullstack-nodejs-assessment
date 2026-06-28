@@ -5,9 +5,9 @@
     <div v-else-if="error">{{ error }}</div>
     <div v-else>
         <label for="search">Search by description:</label>
-       <input type="text" id="search" />
+       <input type="text" id="search" v-model="search" />
       <ul>
-        <li v-for="item in data" :key="item.id">
+        <li v-for="item in filteredData" :key="item.id">
             <span style="font-weight: bold">{{ item.title }}</span> price: {{ item.price }}€
         </li>
       </ul>
@@ -17,7 +17,8 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
+import { search } from 'core-js/fn/symbol';
+import { ref, onMounted, computed} from 'vue';
 
 export default {
   name: 'NewCocktail',
@@ -25,6 +26,7 @@ export default {
     const data = ref([]);
     const loading = ref(true);
     const error = ref(null);
+    const search = ref('');
 
     const fetchData = async () => {
       try {
@@ -40,11 +42,21 @@ export default {
         loading.value = false;
       }
     };
+    const filteredData = computed(() => {
+      if (!search.value) {
+        return data.value;
+      }
+      return data.value.filter(item =>
+        item.description.toLowerCase().includes(search.value.toLowerCase())
+      );
+    });
 
     onMounted(fetchData);
 
     return {
       data,
+      filteredData,
+      search,
       loading,
       error,
     };
