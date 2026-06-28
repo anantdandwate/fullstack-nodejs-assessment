@@ -59,7 +59,7 @@ export default {
         this.form.description = '';
       } catch (error) {
         console.error('There was an error submitting the form:', error);
-        this.errorMessage = 'There was an error submitting the form. Please try again.';
+        this.errorMessage = 'Cocktail could not be created. Name may already exist.';
       }
     }
   }

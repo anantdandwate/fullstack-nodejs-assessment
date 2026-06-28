@@ -20,6 +20,6 @@ export class CocktailsController {
     console.log("info: creating cocktail", cocktail);
     const res = await this.cocktailsService.create(cocktail);
     console.log("res", res);
-    return true;
+    return cocktail;
   }
 }
