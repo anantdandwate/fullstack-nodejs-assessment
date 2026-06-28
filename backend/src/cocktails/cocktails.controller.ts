@@ -1,7 +1,15 @@
-import { Body, Controller, Get, Post, Param } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Param,
+  ConflictException,
+} from "@nestjs/common";
 import { Cocktails } from "./cocktails.entity";
 import { CocktailsService } from "./cocktails.service";
 import { ApiTags, ApiOperation, ApiResponse } from "@nestjs/swagger";
+import { NotFoundException } from "@nestjs/common";
 
 @ApiTags("cocktails")
 @Controller("cocktails")
@@ -32,8 +40,14 @@ export class CocktailsController {
     description: "Cocktail not found",
   })
   @Get(":id")
-  getCocktail(@Param("id") id: string) {
-    return this.cocktailsService.findOne(+id);
+  async getCocktail(@Param("id") id: string) {
+    const cocktail = await this.cocktailsService.findOne(+id);
+
+    if (!cocktail) {
+      throw new NotFoundException("Cocktail not found");
+    }
+
+    return cocktail;
   }
 
   @ApiOperation({
@@ -45,9 +59,11 @@ export class CocktailsController {
   })
   @Post()
   async newCocktail(@Body() cocktail: Cocktails) {
-    console.log("info: creating cocktail", cocktail);
-    const res = await this.cocktailsService.create(cocktail);
-    console.log("res", res);
-    return cocktail;
+    try {
+      await this.cocktailsService.create(cocktail);
+      return cocktail;
+    } catch (err) {
+      throw new ConflictException("Cocktail title already exists");
+    }
   }
 }

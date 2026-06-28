@@ -45,7 +45,7 @@ export default {
       }
     };
     const filteredData = computed(() => {
-      if (!search.value) {
+      if (!search.value.trim()) {
         return data.value;
       }
       return data.value.filter(item =>

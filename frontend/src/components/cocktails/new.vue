@@ -32,7 +32,7 @@ export default {
         price: '',
         description: ''
       },
-      errorMessage: ''
+      errorMessage: '',
     };
   },
   methods: {
@@ -57,6 +57,9 @@ export default {
         this.form.title = '';
         this.form.price = '';
         this.form.description = '';
+        alert('Cocktail created successfully!');
+        this.$router.push('/');
+
       } catch (error) {
         console.error('There was an error submitting the form:', error);
         this.errorMessage = 'Cocktail could not be created. Name may already exist.';
